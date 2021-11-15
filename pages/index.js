@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { mockedDataMark, mockedDataModel } from "./utils/exampleData";
-import { maskNumber, measurementMask } from "./utils/masks";
+import { mockedDataMark, mockedDataModel } from "../src/utils/MockedData";
+import { maskNumber, measurementMask } from "../src/utils/masks";
 
 export default function IndexPage() {
   const [name, setName] = useState("");
