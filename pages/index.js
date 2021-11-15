@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { mockedDataMark, mockedDataModel } from "./utils/exampleData";
 import { maskNumber, measurementMask } from "./utils/masks";
 
 export default function IndexPage() {
@@ -17,8 +20,30 @@ export default function IndexPage() {
   const [heigth, setHeigth] = useState("");
   const [length, setLength] = useState("");
 
+  const sendErrorToasty = (text) => {
+    toast.dark(` ${text}`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: false,
+      progress: undefined,
+    });
+  };
+
+  const sendSucessToasty = (text) => {
+    toast.success(` ${text}`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: false,
+      progress: undefined,
+    });
+  };
+
   const showFields = () => {
-    return {
+    const sendData = {
       name,
       model,
       mark,
@@ -34,32 +59,63 @@ export default function IndexPage() {
       heigth,
       length,
     };
+
+    if (name === "") {
+      return sendErrorToasty("Ops! Nome não foi preenchido.");
+    }
+
+    if (model === "") {
+      return sendErrorToasty("Ops! Modelo não foi preenchido.");
+    }
+
+    if (mark === "") {
+      return sendErrorToasty("Ops! Marca não foi preenchido.");
+    }
+
+    if (year === "") {
+      return sendErrorToasty("Ops! Ano não foi preenchido.");
+    }
+
+    if (equipDesc === "") {
+      return sendErrorToasty(
+        "Ops! Descrição de Equipamento não foi preenchida"
+      );
+    }
+
+    if (weight === "") {
+      return sendErrorToasty("Ops! Peso não foi preenchido.");
+    }
+
+    if (length === "") {
+      return sendErrorToasty("Ops! Comprimento não foi preenchido.");
+    }
+
+    if (width === "") {
+      return sendErrorToasty("Ops! Largura não foi preenchida.");
+    }
+
+    if (heigth === "") {
+      return sendErrorToasty("Ops! Altura não foi preenchida.");
+    }
+
+    if (price === "") {
+      return sendErrorToasty("Ops! Preço não foi preenchido.");
+    }
+
+    const heveImage = document.getElementById("img-preview2").src;
+
+    if (heveImage === "") {
+      return sendErrorToasty("Ops! Você precisa enviar uma imagem");
+    }
+
+    sendSucessToasty("Cadastro realizado com sucesso!");
+    console.log(sendData);
   };
-
-  const mockedDataMark = [
-    "Case Construction",
-    "DAF",
-    "Dynapac",
-    "Epiroc",
-    "Manitou",
-    "New Holland",
-    "Pramac",
-    "Yale",
-  ];
-
-  const mockedDataModel = [
-    "Caminhões",
-    "Escavadeira",
-    "Retroescavadeiras",
-    "Carregadeira",
-    "Trator de Esteira",
-  ];
 
   const showPreview = (event) => {
     if (event.target.files.length > 0) {
       const src = URL.createObjectURL(event.target.files[0]);
       const imgPreview = document.getElementById("img-preview2");
-
       imgPreview.src = src;
       imgPreview.style.display = "block";
     }
@@ -67,6 +123,17 @@ export default function IndexPage() {
 
   return (
     <div className="p-16">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <h1 className="text-2xl font-bold text-center">
         Cadastro de máquina pesadas
       </h1>
@@ -77,7 +144,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite aqui o nome da máquina"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -118,7 +185,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite aqui o ano"
               value={year}
               onChange={(e) => setYear(e.target.value)}
             />
@@ -175,7 +242,7 @@ export default function IndexPage() {
             <textarea
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               rows={3}
-              defaultValue={""}
+              placeholder="Digite aqui uma breve descrição sobre o equipamento"
               value={equipDesc}
               onChange={(e) => setEquipDesc(e.target.value)}
             />
@@ -186,7 +253,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite o peso em Kg"
               value={weight}
               onChange={(e) => setWeight(measurementMask(e))}
             />
@@ -197,7 +264,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite aqui o comprimento em metros"
               value={length}
               onChange={(e) => setLength(measurementMask(e))}
             />
@@ -208,7 +275,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite aqui a altura em metros"
               value={width}
               onChange={(e) => setWidth(measurementMask(e))}
             />
@@ -219,7 +286,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite aqui a altura em metros"
               value={heigth}
               onChange={(e) => setHeigth(measurementMask(e))}
             />
@@ -230,7 +297,7 @@ export default function IndexPage() {
             <input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="John Doe"
+              placeholder="Digite o preço do equipamento"
               value={price}
               maxLength="11"
               onChange={(e) => setPrice(maskNumber(e))}
@@ -251,7 +318,7 @@ export default function IndexPage() {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded "
             onClick={() => {
-              console.log(showFields());
+              showFields();
             }}
           >
             Cadastrar
